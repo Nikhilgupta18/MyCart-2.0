@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}My Cart || Cart{% endblock %}
+{% block css %}
+
+    .table-shadow{
+        box-shadow: 6px 17px 10px 0 rgba(0, 0, 0, 0.2), 0px 1px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+
+    <div class="row my-5 mx-2">
+        <div class="col-sm-8 col-md-8 col-xs-8 table-responsive" >
+            <table class="table table-striped table-light table-shadow">
+              <thead>
+                <tr>
+                  <th scope="col" style="font-weight: normal;">
+
+                  </th>
+                  <th scope="col">Product</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Quantity</th>
+                  <th scope="col">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+              {% for item in items %}
+                <tr>
+                  <th scope="row" >
+                      <img class="row-image" src="{{ item.product.imageURL }}" alt="product image" >
+                  </th>
+                  <td>
+                      <h2>{{ item|capfirst }}</h2>
+
+                  </td>
+                  <td>₹{{ item.product.price }}</td>
+                  <td>
+
+                          <img class="chg-quantity update-cart" data-product="{{ item.product.id }}" data-action="remove" src="{% static 'images/negative.svg' %}">
+                          <p class="quantity">{{ item.quantity }}</p>
+                          <img class="chg-quantity update-cart" data-product="{{ item.product.id }}" data-action="add" src="{% static 'images/positive.png' %}">
+
+                  </td>
+                    <td>
+                        ₹{{ item.get_total }}
+                    </td>
+
+                </tr>
+              {% endfor %}
+
+              </tbody>
+            </table>
+
+        </div>
+        <div class="col-sm-4 col-md-4">
+            <div class="card">
+                <div class="card-body" >
+
+                    <table class="table table-light table-shadow">
+                      <thead>
+                        <tr>
+                          <th scope="col" class="card-title text-muted">PRICE DETAILS</th>
+                          <th scope="col"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                            <tr>
+                            <th><h5>Subtotal: </h5></th>
+                                <td><h5>₹ {{order.get_cart_subtotal}}</h5></td>
+                            </tr>
+                            <tr data-toggle="popover" title="Free delivery above ₹1000 ">
+                            <th ><h5>Delivery Fee: </h5></th>
+                                {% if order.get_delivery_fee %}
+                                <td><h5 >₹{{ order.get_delivery_fee }}</h5></td>
+                                {% else %}
+                                <td><h5 class="text-success">Free</h5></td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <th><h4>Total:</h4></th>
+                                <td><h4>₹ {{order.get_cart_total}}</h4></td>
+                            </tr>
+                      </tbody>
+                    </table>
+                <a href="{% url 'checkout' %}">
+                    <button class="btn center" type="submit" style="background: #fb641b; color: white;" >PLACE ORDER</button>
+                </a>
+                </div>
+            </div>
+       </div>
+    </div>
+    </div>
+{% endblock %}
