@@ -4,16 +4,38 @@ for(let i=0;i<addToCart.length;i++){
     addToCart[i].addEventListener('click', function(){
         const productId = this.dataset.product
         const action = this.dataset.action
-        console.log(productId, action)
 
-        console.log('USER:', user)
         if(user==='AnonymousUser'){
-            console.log('User not authenticated')
+            addItems(productId, action)
         }
         else{
             updateUserOrder(productId, action)
         }
     })
+}
+
+function addItems(productId, action){
+    console.log('AnonymousUser')
+
+    if(action == 'add'){
+        if(cart[productId] == undefined) {
+            cart[productId] = {'quantity': 1}
+        }
+        else {
+            cart[productId]['quantity'] += 1
+        }
+    }
+
+    if(action == 'remove'){
+        cart[productId]['quantity'] -= 1
+
+        if(cart[productId]['quantity'] <= 0)
+            delete cart[productId];
+    }
+
+    document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/";
+
+    location.reload()
 }
 function updateUserOrder(productId, action){
     console.log('User authenticated')

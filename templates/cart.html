@@ -33,7 +33,7 @@
                       <img class="row-image" src="{{ item.product.imageURL }}" alt="product image" >
                   </th>
                   <td>
-                      <h2>{{ item|capfirst }}</h2>
+                      <h2>{{ item.product.name|capfirst }}</h2>
 
                   </td>
                   <td>₹{{ item.product.price }}</td>
